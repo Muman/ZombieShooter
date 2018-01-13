@@ -1,64 +1,58 @@
 var player;
 var map; 
-var cursors;
+var controls;
 var backgroundlayer;
 var pathsLayer;
 
 var playState = {
 
 	preload : function() {
-        game.load.image('player', 'assets/player.png');
-
-        game.load.tilemap('tilemap', 'assets/labirynt2.json', null, Phaser.Tilemap.TILED_JSON);
-    	game.load.image('tiles', 'assets/tileset.png');
-            
-        cursors = game.input.keyboard.createCursorKeys();
+        game.load.spritesheet('player', 'assets/human_player.png', 32, 48);
+        game.load.tilemap('tilemap', 'assets/CSV_Labirynt.csv', null, Phaser.Tilemap.CSV);
+    	game.load.image('tileset', 'assets/tileset.png');     
 	},
 
 	create : function() {
 
 		game.physics.startSystem(Phaser.Physics.ARCADE);
 
-        map = game.add.tilemap('tilemap');
-  		map.addTilesetImage('tileset', 'tiles');
+        map = game.add.tilemap('tilemap', 32, 32);
+  		map.addTilesetImage('tileset');
 
-  		backgroundlayer = map.createLayer('Obstacles');
-  		pathsLayer = map.createLayer('Paths');
+  		backgroundlayer = map.createLayer(0);
+  		
+        map.setCollisionBetween(1, 1);
+        backgroundlayer.resizeWorld();
 
-    	player = game.add.sprite( 0.0, 0.0, 'player');
-    	player.anchor.setTo(0.5, 0.5);
+    	player = new Player(game.add.sprite(0, 0, 'player'));
 
-		game.physics.arcade.enable(player);
-
-		player.body.bounce.y = 0.2;
-   	 	player.body.linearDamping = 1;
-    	player.body.collideWorldBounds = true;
-
-  		map.setCollisionByExclusion([], true, backgroundlayer);
-  		backgroundlayer.resizeWorld();
-
-  		game.camera.follow(player);
+		game.physics.enable(player.sprite, Phaser.Physics.ARCADE);
+        game.camera.follow(player.sprite);
+        
+        player.scalePlayer(1, 1);
+        player.setCollisionWithWorldBounds(true);
+  		controls = game.input.keyboard.createCursorKeys();
 	},
 
 	update : function() {
 
-			game.physics.arcade.collide(backgroundlayer, player);
+			game.physics.arcade.collide(player.sprite, backgroundlayer);
 
-            if(cursors.left.isDown){
-                player.x -= 1;
+           player.update(0);
+            if(controls.left.isDown){
+                player.moveLeft();
             }
 
-            if(cursors.right.isDown){
-                player.x += 1;
+            if(controls.right.isDown){
+                player.moveRight();
             }
 
-            if (cursors.down.isDown){
-                    player.y += 1;
+            if (controls.down.isDown){
+                player.moveDown();
             }  
 
-            if (cursors.up.isDown){
-                player.y -= 1;
+            if (controls.up.isDown){
+                player.moveUp();
             }
 	}
-
 }
