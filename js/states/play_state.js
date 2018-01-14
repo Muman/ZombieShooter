@@ -38,7 +38,7 @@ var playState = {
 
 			game.physics.arcade.collide(player.sprite, backgroundlayer);
 
-           player.update(0);
+            player.updateVelocity();
             if(controls.left.isDown){
                 player.moveLeft();
             }

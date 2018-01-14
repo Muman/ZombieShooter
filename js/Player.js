@@ -19,27 +19,40 @@ class Player {
         this.sprite.body.collideWorldBounds = p_flagValue;
     }
     
-    update(p_velocity) {
-        this.sprite.body.velocity.set(p_velocity);
+    updateVelocity() {
+        var l_velocity = 10;
+        
+        if(this.sprite.body.velocity.y > 0) {
+            this.sprite.body.velocity.y -= l_velocity;
+        }
+        if(this.sprite.body.velocity.y < 0) {
+            this.sprite.body.velocity.y += l_velocity;
+        }
+        if(this.sprite.body.velocity.x > 0) {
+            this.sprite.body.velocity.x -= l_velocity;
+        }
+        if(this.sprite.body.velocity.x < 0) {
+            this.sprite.body.velocity.x += l_velocity;
+        }
     }
 
     moveUp() {
-        this.sprite.body.velocity.y = -100;
+        this.sprite.body.velocity.y = -150;
         this.sprite.animations.play('moveUp', 15);
     }
 
     moveDown() {
-        this.sprite.body.velocity.y = 100;
+        this.sprite.body.velocity.y = 150;
         this.sprite.animations.play('moveDown', 15);
     }
 
     moveRight() {
-        this.sprite.body.velocity.x = 100;
+        this.sprite.body.velocity.x = 150;
         this.sprite.animations.play('moveRight', 15);
     }
 
     moveLeft() {
-        this.sprite.body.velocity.x = -100;
+        this.sprite.body.velocity.x = -150;
         this.sprite.animations.play('moveLeft', 15);
     }
     
