@@ -1,3 +1,5 @@
+var maxVelocity = 150;
+
 class Player {
     constructor(p_sprite) {
         this.sprite = p_sprite;
@@ -8,6 +10,8 @@ class Player {
         this.sprite.animations.add('moveRight', [9, 10, 11, 8], 4, false);
         this.sprite.animations.add('moveLeft', [5, 6, 7, 4], 4, false);
         this.sprite.animations.add('moveRight', [9, 10, 11, 8], 4, false);
+        this.horizontalVelocity = 0;
+        this.verticalVelocity = 0;
     }
 
 
@@ -19,41 +23,54 @@ class Player {
         this.sprite.body.collideWorldBounds = p_flagValue;
     }
     
-    updateVelocity() {
-        var l_velocity = 10;
-        
-        if(this.sprite.body.velocity.y > 0) {
-            this.sprite.body.velocity.y -= l_velocity;
-        }
-        if(this.sprite.body.velocity.y < 0) {
-            this.sprite.body.velocity.y += l_velocity;
-        }
-        if(this.sprite.body.velocity.x > 0) {
-            this.sprite.body.velocity.x -= l_velocity;
-        }
-        if(this.sprite.body.velocity.x < 0) {
-            this.sprite.body.velocity.x += l_velocity;
-        }
+    reset() {
+        this.horizontalVelocity = 0;
+        this.verticalVelocity = 0;
     }
 
-    moveUp() {
-        this.sprite.body.velocity.y = -150;
+    setDirectionUp() {
+        this.verticalVelocity = -maxVelocity;
         this.sprite.animations.play('moveUp', 15);
     }
 
-    moveDown() {
-        this.sprite.body.velocity.y = 150;
+    setDirectionDown() {
+        this.verticalVelocity = maxVelocity;
         this.sprite.animations.play('moveDown', 15);
     }
 
-    moveRight() {
-        this.sprite.body.velocity.x = 150;
-        this.sprite.animations.play('moveRight', 15);
+    setDirectionRight() {
+        this.horizontalVelocity = maxVelocity;
+        if (this.verticalVelocity == 0) {
+            this.sprite.animations.play('moveRight', 15);
+        }
+        else if (this.verticalVelocity > 0) {
+            this.sprite.animations.play('moveDown', 15);
+        }
+        else if (this.verticalVelocity < 0) {
+            this.sprite.animations.play('moveUp', 15);
+        }
     }
 
-    moveLeft() {
-        this.sprite.body.velocity.x = -150;
-        this.sprite.animations.play('moveLeft', 15);
+    setDirectionLeft() {
+        this.horizontalVelocity = -maxVelocity;
+        if (this.verticalVelocity == 0) {
+            this.sprite.animations.play('moveLeft', 15);
+        }
+        else if (this.verticalVelocity > 0) {
+            this.sprite.animations.play('moveDown', 15);
+        }
+        else if (this.verticalVelocity < 0) {
+            this.sprite.animations.play('moveUp', 15);
+        }
+    }
+    
+    move() {
+        var normalizeMultiper = 1;
+        if ( math.pow(this.horizontalVelocity, 2) + math.pow(this.verticalVelocity, 2) >= math.pow(maxVelocity, 2) * 2) {
+            normalizeMultiper = math.sqrt( math.pow(maxVelocity, 2) / 2 )/ maxVelocity;
+        }
+        this.sprite.body.velocity.x = normalizeMultiper * this.horizontalVelocity;
+        this.sprite.body.velocity.y = normalizeMultiper * this.verticalVelocity;
     }
     
     

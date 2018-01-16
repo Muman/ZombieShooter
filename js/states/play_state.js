@@ -37,22 +37,24 @@ var playState = {
 	update : function() {
 
 			game.physics.arcade.collide(player.sprite, backgroundlayer);
-
-            player.updateVelocity();
-            if(controls.left.isDown){
-                player.moveLeft();
-            }
-
-            if(controls.right.isDown){
-                player.moveRight();
-            }
-
+            player.reset();
+        
             if (controls.down.isDown){
-                player.moveDown();
+                player.setDirectionDown();
             }  
 
             if (controls.up.isDown){
-                player.moveUp();
+                player.setDirectionUp();
             }
+        
+            if(controls.left.isDown){
+                player.setDirectionLeft();
+            }
+
+            if(controls.right.isDown){
+                player.setDirectionRight();
+            }
+
+            player.move();
 	}
 }
