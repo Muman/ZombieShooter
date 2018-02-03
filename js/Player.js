@@ -14,7 +14,6 @@ class Player {
         this.verticalVelocity = 0;
     }
 
-
     scalePlayer(p_firstMutlipler, p_secondMultipler) {
         this.sprite.scale.setTo(p_firstMutlipler, p_secondMultipler);
     }
@@ -73,5 +72,19 @@ class Player {
         this.sprite.body.velocity.y = normalizeMultiper * this.verticalVelocity;
     }
     
-    
+    y() {
+        return this.sprite.y;
+    }
+
+    x() {
+        return this.sprite.x;
+    }
+
+    gotHit() {
+                this.hp -= 10;
+
+        if (this.hp < 0) {
+            this.sprite.kill();
+        }
+    }
 }
