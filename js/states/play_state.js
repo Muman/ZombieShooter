@@ -5,7 +5,7 @@ var backgroundlayer;
 var enemiesSpritesGroup;
 var enemies;
 
-let ENEMIES_COUNT = 40;
+let ENEMIES_COUNT = 100;
 let MAP_WIDTH = 32;
 
 var playState = {
@@ -26,11 +26,11 @@ var playState = {
 
   		backgroundlayer = map.createLayer(0);
         map.setCollision(1, true, backgroundlayer);
-        backgroundlayer.resizeWorld();       
+        backgroundlayer.resizeWorld(true);
 
         this.enemies = this.createRandomEnemies(ENEMIES_COUNT);
 
-    	player = new Player(game.add.sprite(600, 600, 'player'));
+    	player = new Player(game.add.sprite(game.world.centerX, game.world.centerY, 'player'));
 
         enemiesSpritesGroup = game.add.group();
 
@@ -85,6 +85,7 @@ var playState = {
 
     playerCollidedWithZombie : function(obj1, obj2) {
         player.gotHit();
+        game.state.start('gameOver');
     },
 
     zombieCollidedWithWall : function(obj1, obj2) {
