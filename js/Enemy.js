@@ -33,7 +33,7 @@ class Enemy {
 			this.sprite.animations.play('moveUp', 10);
     	}
 		else {
-			this.sprite.body.velocity.y = 0;
+			//this.sprite.body.velocity.y = 0;
 		}
 
 		if (ZombiePosistion_X < X) {
@@ -46,13 +46,15 @@ class Enemy {
 			if (this.sprite.body.velocity.y == 0) {
 				this.sprite.animations.play('moveLeft', 10);
 			}
+    	} else {
+    		//this.sprite.body.velocity.x = 0;
     	}
 		
 		if ( math.pow(this.sprite.body.velocity.x, 2) + math.pow(this.sprite.body.velocity.y, 2) >= math.pow(ENEMY_MOVEMENT_VELOCITY, 2) * 2) {
             normalizeMultiper = math.sqrt( math.pow(ENEMY_MOVEMENT_VELOCITY, 2) / 2 )/ ENEMY_MOVEMENT_VELOCITY;
         }
-        this.sprite.body.velocity.x = normalizeMultiper * this.sprite.body.velocity.x;
-        this.sprite.body.velocity.y = normalizeMultiper * this.sprite.body.velocity.y;
+        this.sprite.body.velocity.x *= normalizeMultiper;
+        this.sprite.body.velocity.y *= normalizeMultiper;
 		
     }
 

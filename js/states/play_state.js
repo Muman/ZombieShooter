@@ -5,7 +5,7 @@ var backgroundlayer;
 var enemiesSpritesGroup;
 var enemies;
 
-let ENEMIES_COUNT = 100;
+let ENEMIES_COUNT = 50;
 let MAP_WIDTH = 32;
 
 var playState = {
@@ -20,6 +20,7 @@ var playState = {
 	create : function() {
 
 		game.physics.startSystem(Phaser.Physics.ARCADE);
+        game.physics.arcade.TILE_BIAS = 40;
 
         map = game.add.tilemap('tilemap', 32, 32);
   		map.addTilesetImage('tileset');
@@ -32,13 +33,8 @@ var playState = {
 
     	player = new Player(game.add.sprite(game.world.centerX, game.world.centerY, 'player'));
 
-        enemiesSpritesGroup = game.add.group();
-
-        for (var i = this.enemies.length - 1; i >= 0; i--) {
-            enemiesSpritesGroup.add(this.enemies[i].sprite);
-        }
-
-        game.physics.enable([backgroundlayer, player.sprite, enemiesSpritesGroup], Phaser.Physics.ARCADE);
+        game.physics.enable(enemiesSpritesGroup, Phaser.Physics.ARCADE);
+        game.physics.enable([backgroundlayer, player.sprite], Phaser.Physics.ARCADE);
         game.camera.follow(player.sprite);
         
         player.setCollisionWithWorldBounds(true);
@@ -49,9 +45,12 @@ var playState = {
 
 	update : function() {
 
-            game.physics.arcade.collide(enemiesSpritesGroup, enemiesSpritesGroup);
+            this.updateEnemies();
+            player.move();
+
+            game.physics.arcade.collide(enemiesSpritesGroup, this.zombieCollidedWithZombie);
             game.physics.arcade.collide(player.sprite, backgroundlayer);
-            game.physics.arcade.collide(enemiesSpritesGroup, backgroundlayer, this.zombieCollidedWithWall);
+            game.physics.arcade.collide(enemiesSpritesGroup, backgroundlayer);
             game.physics.arcade.collide(enemiesSpritesGroup, player.sprite, this.playerCollidedWithZombie);
 
             player.reset();
@@ -71,10 +70,6 @@ var playState = {
             if(controls.right.isDown){
                 player.setDirectionRight();
             }
-
-            this.updateEnemies();
-
-            player.move();
 	},
 
     updateEnemies() {
@@ -85,25 +80,29 @@ var playState = {
 
     playerCollidedWithZombie : function(obj1, obj2) {
         player.gotHit();
-        game.state.start('gameOver');
+       // game.state.start('gameOver');
     },
 
-    zombieCollidedWithWall : function(obj1, obj2) {
-        console.log("Zombie touched wall");
+    zombieCollidedWithZombie : function(obj1) {
+/*        obj1.body.velocity.x = 0;
+        obj1.body.velocity.y = 0;
+        obj1.body.stopVelocityOnCollide = true;*/
     },
 
     createRandomEnemies(enemiesCount) {
         var randomlyPlacedEnemies = [];
 
-        for (var i = 0; i < enemiesCount; ++i) {
-            var enemy = new Enemy(game.add.sprite(Math.random() * 100 * 32, Math.random() * 100 % MAP_WIDTH, 'enemy'));
+        enemiesSpritesGroup = game.add.group();
+        enemiesSpritesGroup.enableBody = true;
+        enemiesSpritesGroup.physicsBodyType = Phaser.Physics.ARCADE;
+        enemiesSpritesGroup.setAll('body.collideWorldBounds', true);
 
-        console.log("enemy created " + enemy);
-            //enemy.setCollisionWithWorldBounds(true);
+       for (var i = 0; i < enemiesCount; ++i) {
+            var sprite = enemiesSpritesGroup.create(i * 63, Math.random() * 100 % MAP_WIDTH, 'enemy');
+            sprite.body.mass = 100;
+            var enemy = new Enemy(sprite);
             randomlyPlacedEnemies.push(enemy);
         }
-
-        console.log(randomlyPlacedEnemies.length);
 
         return randomlyPlacedEnemies;
     }

@@ -81,10 +81,10 @@ class Player {
     }
 
     gotHit() {
-                this.hp -= 10;
+        this.hp -= 10;
 
         if (this.hp < 0) {
-            this.sprite.kill();
+            //this.sprite.kill();
         }
     }
 }
