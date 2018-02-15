@@ -1,6 +1,7 @@
 var player;
 var controls;
 var backgroundlayer;
+var timer;
 
 var enemiesSpritesGroup;
 var enemies;
@@ -13,7 +14,7 @@ var playState = {
 	preload : function() {
         game.load.spritesheet('player', 'assets/human_player.png', 32, 48);
         game.load.spritesheet('enemy', 'assets/zombie5r.png', 32, 48);
-        game.load.tilemap('tilemap', 'assets/maze3.csv', null, Phaser.Tilemap.CSV);
+        game.load.tilemap('tilemap', 'assets/maze4.csv', null, Phaser.Tilemap.CSV);
     	game.load.image('tileset', 'assets/tileset.png');     
 	},
 
@@ -84,8 +85,12 @@ var playState = {
     },
 
     playerCollidedWithZombie : function(obj1, obj2) {
-        player.gotHit();
-        game.state.start('gameOver');
+        if (math.round(game.time.totalElapsedSeconds()) % 3 == 0) {
+            player.gotHit();
+        }
+        if (player.hp <= 0) {
+            game.state.start('gameOver');
+        }
     },
 
     zombieCollidedWithWall : function(obj1, obj2) {
