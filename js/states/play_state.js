@@ -12,8 +12,10 @@ var bullet;
 var bulletTime = 0;
 let FIREARM_LOAD = 20;
 
-let ENEMIES_COUNT = 100;
+let ENEMIES_COUNT = 4;
 let MAP_WIDTH = 32;
+
+let level = 1;
 
 var playState = {
 
@@ -23,7 +25,7 @@ var playState = {
         game.load.tilemap('tilemap', 'assets/maze4.csv', null, Phaser.Tilemap.CSV);
         game.load.image('tileset', 'assets/tileset.png');
         game.load.image('bullet', 'assets/bullet0.png');
-                game.load.image('heart', 'assets/heart.png');
+        game.load.image('heart', 'assets/heart.png');
     },
 
 	create : function() {
@@ -41,7 +43,7 @@ var playState = {
 
         this.createBullets(FIREARM_LOAD);
 
-        this.enemies = this.createRandomEnemies(ENEMIES_COUNT);
+        this.enemies = this.createRandomEnemies(ENEMIES_COUNT * level);
         enemiesSpritesGroup = game.add.group();
         enemiesSpritesGroup.classType = Enemy;
 
@@ -57,6 +59,8 @@ var playState = {
         controls = game.input.keyboard.createCursorKeys();
         game.input.keyboard.addKeyCapture([ Phaser.Keyboard.SPACEBAR ]);
         this.createZombieCounter();
+        
+        this.initPlayerHpIndicator();
     },
 
 
@@ -73,7 +77,6 @@ var playState = {
 
         controls = game.input.keyboard.createCursorKeys();
 
-        this.initPlayerHpIndicator();
 
         if (controls.down.isDown){
             player.setDirectionY(DOWN);
@@ -135,7 +138,7 @@ var playState = {
     },
 
     playerCollidedWithZombie : function(obj1, obj2) {
-        if (math.round(game.time.totalElapsedSeconds()) % 10 == 0) {
+        if (math.round(game.time.totalElapsedSeconds()) % 5 == 0) {
             player.gotHit();
         }
         if (player.hp <= 0) {

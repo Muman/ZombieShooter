@@ -102,7 +102,7 @@ class Player {
     }
 
     gotHit() {
-        this.hp -= 10;
+        this.hp -= 2;
         if (this.hp < 0) {
             this.sprite.kill();
         }

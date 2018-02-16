@@ -5,6 +5,8 @@ var text;
 var btnRetry;
 let RETRY_BUTTON_WIDTH = 300;
 let RETRY_BUTTON_HEIGHT = 100;
+let NEXT_BUTTON_WIDTH = 300;
+let NEXT_BUTTON_HEIGHT = 150;
 
 var gameOverState = {
 	
