@@ -10,8 +10,10 @@ var bullet;
 var bulletTime = 0;
 let FIREARM_LOAD = 20;
 
-let ENEMIES_COUNT = 100;
+let ENEMIES_COUNT = 4;
 let MAP_WIDTH = 32;
+
+let level = 1;
 
 var playState = {
 
@@ -38,7 +40,7 @@ var playState = {
         
         this.createBullets(FIREARM_LOAD);
         
-        this.enemies = this.createRandomEnemies(ENEMIES_COUNT);
+        this.enemies = this.createRandomEnemies(ENEMIES_COUNT * level);
         enemiesSpritesGroup = game.add.group();
         enemiesSpritesGroup.classType = Enemy;
         
@@ -122,7 +124,7 @@ var playState = {
         var randomlyPlacedEnemies = [];
         
         for (var i = 0; i < enemiesCount; ++i) {
-            var enemy = new Enemy(game.add.sprite(Math.random() * 100 * 32, Math.random() * 100 % MAP_WIDTH, 'enemy'));
+            var enemy = new Enemy(game.add.sprite(Math.random() * 10 * 32, Math.random() * 10 % MAP_WIDTH, 'enemy'));
             
             console.log("enemy created " + enemy);
             //enemy.setCollisionWithWorldBounds(true);

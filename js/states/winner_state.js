@@ -1,18 +1,16 @@
-let WINNER_TEXT = "YOU WON!!!";
-
 var text;
 var btnRetry;
 
 var winnerState = {
 	
 	preload : function() {
-		    	game.load.image('retry_button', 'assets/retry_button.png');     
+		    	game.load.image('next', 'assets/next.png');     
 	},
 
 	create : function() {
 		game.stage.setBackgroundColor(0x2d2d2d);
-
- 		btnRetry = game.add.button(game.camera.view.centerX, game.camera.view.centerY,'retry_button', this.onRetryBtnCallback, this);
+        var WINNER_TEXT = "YOU WON LEVEL "  + level + " !!" ;
+ 		btnRetry = game.add.button(game.camera.view.centerX, game.camera.view.centerY,'next', this.onRetryBtnCallback, this);
  		btnRetry.width = RETRY_BUTTON_WIDTH;
  		btnRetry.height = RETRY_BUTTON_HEIGHT;
  		btnRetry.fixedToCamera  = true;
@@ -38,6 +36,6 @@ var winnerState = {
 	},
 
 	onRetryBtnCallback : function() {
-		game.state.start('play');
+		game.state.start('increaseLevel');
 	}
 }
