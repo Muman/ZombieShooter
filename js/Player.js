@@ -20,11 +20,11 @@ class Player {
         this.fireDirectionY = DOWN;
         this.hp = 100;
     }
-
+    
     scalePlayer(p_firstMutlipler, p_secondMultipler) {
         this.sprite.scale.setTo(p_firstMutlipler, p_secondMultipler);
     }
-
+    
     setCollisionWithWorldBounds(p_flagValue) {
         this.sprite.body.collideWorldBounds = p_flagValue;
     }
@@ -33,11 +33,11 @@ class Player {
         this.directionX = NONE;
         this.directionY = NONE;
     }
-
+    
     setDirectionX(p_direction) {
         this.directionX = p_direction;
     }
-
+    
     setDirectionY(p_direction) {
         this.directionY = p_direction;
     }
@@ -73,7 +73,7 @@ class Player {
                 this.fireDirectionX = LEFT;
                 this.fireDirectionY = NONE;
             }
-
+            
         }
     }
     
@@ -81,7 +81,10 @@ class Player {
         var normalizeMultiper = 1;
         var horizontalVelocity = this.directionX * maxVelocity;
         var verticalVelocity = this.directionY * maxVelocity;
-        if ( math.pow(horizontalVelocity, 2) + math.pow(verticalVelocity, 2) >= math.pow(maxVelocity, 2) * 2) {
+        if (math.pow(horizontalVelocity, 2) 
+            + math.pow(verticalVelocity, 2) 
+            >= math.pow(maxVelocity, 2) * 2) 
+        {
             normalizeMultiper = math.sqrt( math.pow(maxVelocity, 2) / 2 )/ maxVelocity;
         }
         this.sprite.body.velocity.x = normalizeMultiper * horizontalVelocity;
@@ -91,11 +94,11 @@ class Player {
     y() {
         return this.sprite.y;
     }
-
+    
     x() {
         return this.sprite.x;
     }
-
+    
     gotHit() {
         this.hp -= 10;
         if (this.hp < 0) {
