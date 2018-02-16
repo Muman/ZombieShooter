@@ -1,6 +1,8 @@
 var player;
 var controls;
 var backgroundlayer;
+var tvPlayerHpIndicator;
+var imageHeart;
 
 var enemiesSpritesGroup;
 var enemies;
@@ -14,7 +16,8 @@ var playState = {
         game.load.spritesheet('player', 'assets/human_player.png', 32, 48);
         game.load.spritesheet('enemy', 'assets/zombie5r.png', 32, 48);
         game.load.tilemap('tilemap', 'assets/maze3.csv', null, Phaser.Tilemap.CSV);
-    	game.load.image('tileset', 'assets/tileset.png');     
+    	game.load.image('tileset', 'assets/tileset.png');
+        game.load.image('heart', 'assets/heart.png');      
 	},
 
 	create : function() {
@@ -43,9 +46,10 @@ var playState = {
         
         player.setCollisionWithWorldBounds(true);
 
-  		controls = game.input.keyboard.createCursorKeys();
-	},
+        controls = game.input.keyboard.createCursorKeys();
 
+        this.initPlayerHpIndicator();
+	},
 
 	update : function() {
 
@@ -75,7 +79,29 @@ var playState = {
             this.updateEnemies();
 
             player.move();
+
+            this.updatePlayerHpIndicator();
 	},
+
+    initPlayerHpIndicator() {
+
+        imageHeart = game.add.sprite(game.camera.width - 100, game.camera.height -100, "heart");
+        imageHeart.fixedToCamera = true;
+        imageHeart.cameraOffset.setTo(game.camera.width - 100, game.camera.height -95);
+        imageHeart.scale.setTo(0.25, 0.25);
+
+        tvPlayerHpIndicator = game.add.text(5, 5, "100%");
+        tvPlayerHpIndicator.fixedToCamera = true;
+        tvPlayerHpIndicator.anchor.set(0.5);
+        tvPlayerHpIndicator.cameraOffset.setTo(game.camera.width - 165, game.camera.height -60);
+        tvPlayerHpIndicator.align = 'center';
+        tvPlayerHpIndicator.font = 'Arial Black';
+        tvPlayerHpIndicator.fontSize = 55;
+        tvPlayerHpIndicator.fontWeight = 'bold';
+        tvPlayerHpIndicator.stroke = '#000000';
+        tvPlayerHpIndicator.strokeThickness = 6;
+        tvPlayerHpIndicator.fill = '#43d637';
+    },
 
     updateEnemies() {
         for (var i = 0; i < this.enemies.length; i++) {
@@ -106,5 +132,19 @@ var playState = {
         console.log(randomlyPlacedEnemies.length);
 
         return randomlyPlacedEnemies;
+    },
+
+    updatePlayerHpIndicator() {
+        var playerHpPercantage = player.hp / player.maxHp * 100;
+
+        tvPlayerHpIndicator.text = playerHpPercantage; 
+
+        if (playerHpPercantage < 60) {
+            tvPlayerHpIndicator.fill = '#ffff00';
+        } else if (playerHpPercantage < 30) {
+            tvPlayerHpIndicator.fill = '#ff0000';
+        } else {
+            tvPlayerHpIndicator.fill = '#43d637';
+        }
     }
 }

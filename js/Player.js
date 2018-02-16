@@ -5,6 +5,7 @@ class Player {
         this.sprite = p_sprite;
         this.sprite.anchor.setTo(0.5, 0.5);
         this.hp = 100;
+        this.maxHp = 100;
         this.sprite.animations.add('moveUp', [13, 14, 15, 12], 4, false);
         this.sprite.animations.add('moveDown', [1, 2, 3, 0], 4, false);
         this.sprite.animations.add('moveRight', [9, 10, 11, 8], 4, false);
