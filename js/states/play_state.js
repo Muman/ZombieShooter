@@ -57,6 +57,8 @@ var playState = {
         controls = game.input.keyboard.createCursorKeys();
         game.input.keyboard.addKeyCapture([ Phaser.Keyboard.SPACEBAR ]);
         this.createZombieCounter();
+
+        this.initPlayerHpIndicator();
     },
 
 
@@ -70,10 +72,6 @@ var playState = {
         game.physics.arcade.collide(enemiesSpritesGroup, player.sprite, this.playerCollidedWithZombie);
 
         player.reset();
-
-        controls = game.input.keyboard.createCursorKeys();
-
-        this.initPlayerHpIndicator();
 
         if (controls.down.isDown){
             player.setDirectionY(DOWN);
