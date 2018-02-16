@@ -53,6 +53,7 @@ var playState = {
         
         controls = game.input.keyboard.createCursorKeys();
         game.input.keyboard.addKeyCapture([ Phaser.Keyboard.SPACEBAR ]);
+        this.createZombieCounter();
     },
     
     
@@ -88,12 +89,11 @@ var playState = {
             this.fireBullet();
         }
         
-        this.updateEnemies();
-        
         player.move();
         player.playAnimation();
         
-        console.log("zombies: " + enemiesSpritesGroup.countLiving());
+        this.updateEnemies();
+        this.updateZombieCounter();
         if (enemiesSpritesGroup.countLiving() <= 0) {
             game.state.start('winnerState');
         }
@@ -195,5 +195,22 @@ var playState = {
     collideBulletWall(bullet, wall) {
         
         bullet.kill();
+    },
+    
+    createZombieCounter() {
+        text = game.add.text(5, 5, "ZOMBIES: " + enemiesSpritesGroup.countLiving());
+	    text.fixedToCamera  = true;
+	    text.anchor.set(0.0);
+	    text.align = 'center';
+	    text.font = 'Arial Black';
+	    text.fontSize = 20;
+	    text.fontWeight = 'bold';
+	    text.stroke = '#000000';
+	    text.strokeThickness = 6;
+	    text.fill = '#43d637';
+    },
+    
+    updateZombieCounter() {
+        text.setText("ZOMBIES: " + enemiesSpritesGroup.countLiving());
     }
 }
