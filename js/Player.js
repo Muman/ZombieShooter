@@ -9,6 +9,8 @@ class Player {
     constructor(p_sprite) {
         this.sprite = p_sprite;
         this.sprite.anchor.setTo(0.5, 0.5);
+        this.hp = 100;
+        this.maxHp = 100;
         this.sprite.animations.add('moveUp', [13, 14, 15, 12], 4, false);
         this.sprite.animations.add('moveDown', [1, 2, 3, 0], 4, false);
         this.sprite.animations.add('moveRight', [9, 10, 11, 8], 4, false);
@@ -20,11 +22,11 @@ class Player {
         this.fireDirectionY = DOWN;
         this.hp = 100;
     }
-    
+
     scalePlayer(p_firstMutlipler, p_secondMultipler) {
         this.sprite.scale.setTo(p_firstMutlipler, p_secondMultipler);
     }
-    
+
     setCollisionWithWorldBounds(p_flagValue) {
         this.sprite.body.collideWorldBounds = p_flagValue;
     }
@@ -33,23 +35,23 @@ class Player {
         this.directionX = NONE;
         this.directionY = NONE;
     }
-    
+
     setDirectionX(p_direction) {
         this.directionX = p_direction;
     }
-    
+
     setDirectionY(p_direction) {
         this.directionY = p_direction;
     }
-    
+
     getFireDirectionX() {
         return this.fireDirectionX;
     }
-    
+
     getFireDirectionY() {
         return this.fireDirectionY;
     }
-    
+
     playAnimation() {
         if (this.directionY != NONE) {
             if (this.directionY == UP) {
@@ -73,7 +75,7 @@ class Player {
                 this.fireDirectionX = LEFT;
                 this.fireDirectionY = NONE;
             }
-            
+
         }
     }
     
@@ -81,9 +83,9 @@ class Player {
         var normalizeMultiper = 1;
         var horizontalVelocity = this.directionX * maxVelocity;
         var verticalVelocity = this.directionY * maxVelocity;
-        if (math.pow(horizontalVelocity, 2) 
-            + math.pow(verticalVelocity, 2) 
-            >= math.pow(maxVelocity, 2) * 2) 
+        if (math.pow(horizontalVelocity, 2)
+            + math.pow(verticalVelocity, 2)
+            >= math.pow(maxVelocity, 2) * 2)
         {
             normalizeMultiper = math.sqrt( math.pow(maxVelocity, 2) / 2 )/ maxVelocity;
         }
@@ -94,11 +96,11 @@ class Player {
     y() {
         return this.sprite.y;
     }
-    
+
     x() {
         return this.sprite.x;
     }
-    
+
     gotHit() {
         this.hp -= 10;
         if (this.hp < 0) {
