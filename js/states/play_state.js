@@ -16,6 +16,7 @@ let ENEMIES_COUNT = 100;
 let MAP_WIDTH = 32;
 
 var gunShotSound;
+var backgroundSound;
 var playState = {
 
     preload : function() {
@@ -26,6 +27,7 @@ var playState = {
         game.load.image('bullet', 'assets/bullet0.png');
         game.load.image('heart', 'assets/heart.png');
         game.load.audio('gunShot', 'assets/gunshot.mp3');
+        game.load.audio('backgroundSound', 'assets/background_sound.mp3');
     },
 
 	create : function() {
@@ -103,6 +105,7 @@ var playState = {
         this.updateEnemies();
         this.updateZombieCounter();
         if (enemiesSpritesGroup.countLiving() <= 0) {
+            backgroundSound.stop();
             game.state.start('winnerState');
         }
 
@@ -111,6 +114,9 @@ var playState = {
 
     initGameSounds() {
         gunShotSound = game.add.audio('gunShot');
+        backgroundSound = game.add.audio('backgroundSound');
+
+        backgroundSound.loopFull();
     },
 
     initPlayerHpIndicator() {
@@ -144,6 +150,7 @@ var playState = {
             player.gotHit();
         }
         if (player.hp <= 0) {
+            backgroundSound.stop();
             game.state.start('gameOver');
         }
     },
