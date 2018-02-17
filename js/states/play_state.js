@@ -15,6 +15,7 @@ let FIREARM_LOAD = 20;
 let ENEMIES_COUNT = 100;
 let MAP_WIDTH = 32;
 
+var gunShotSound;
 var playState = {
 
     preload : function() {
@@ -23,7 +24,8 @@ var playState = {
         game.load.tilemap('tilemap', 'assets/maze4.csv', null, Phaser.Tilemap.CSV);
         game.load.image('tileset', 'assets/tileset.png');
         game.load.image('bullet', 'assets/bullet0.png');
-                game.load.image('heart', 'assets/heart.png');
+        game.load.image('heart', 'assets/heart.png');
+        game.load.audio('gunShot', 'assets/gunshot.mp3');
     },
 
 	create : function() {
@@ -59,6 +61,7 @@ var playState = {
         this.createZombieCounter();
 
         this.initPlayerHpIndicator();
+        this.initGameSounds();
     },
 
 
@@ -68,7 +71,7 @@ var playState = {
         game.physics.arcade.collide(bullets, backgroundlayer, this.collideBulletWall);
         game.physics.arcade.collide(enemiesSpritesGroup, enemiesSpritesGroup);
         game.physics.arcade.collide(player.sprite, backgroundlayer);
-        game.physics.arcade.collide(enemiesSpritesGroup, backgroundlayer, this.zombieCollidedWithWall);
+        game.physics.arcade.collide(enemiesSpritesGroup, backgroundlayer);
         game.physics.arcade.collide(enemiesSpritesGroup, player.sprite, this.playerCollidedWithZombie);
 
         player.reset();
@@ -106,6 +109,10 @@ var playState = {
         this.updatePlayerHpIndicator();
     },
 
+    initGameSounds() {
+        gunShotSound = game.add.audio('gunShot');
+    },
+
     initPlayerHpIndicator() {
 
         imageHeart = game.add.sprite(game.camera.width - 100, game.camera.height -100, "heart");
@@ -141,10 +148,6 @@ var playState = {
         }
     },
 
-    zombieCollidedWithWall : function(obj1, obj2) {
-        console.log("Zombie touched wall");
-    },
-
     createRandomEnemies(enemiesCount) {
         var randomlyPlacedEnemies = [];
 
@@ -152,7 +155,6 @@ var playState = {
             var enemy = new Enemy(game.add.sprite(Math.random() * 100 * 32, Math.random() * 100 % MAP_WIDTH, 'enemy'));
 
             console.log("enemy created " + enemy);
-            //enemy.setCollisionWithWorldBounds(true);
             randomlyPlacedEnemies.push(enemy);
         }
 
@@ -192,6 +194,8 @@ var playState = {
             bullet = bullets.getFirstExists(false);
             if (bullet)
             {
+                gunShotSound.play();
+
                 if (player.getFireDirectionX() != NONE) {
                     bullet.reset(player.sprite.x + 50 * player.getFireDirectionX(),
                                 player.sprite.y - 8 * player.getFireDirectionX());
