@@ -1,4 +1,4 @@
-let ENEMY_MOVEMENT_VELOCITY = 40;
+let ENEMY_MOVEMENT_VELOCITY = 100;
 
 class Enemy {
 
