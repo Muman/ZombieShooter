@@ -25,8 +25,8 @@ var playState = {
     preload : function() {
         game.load.spritesheet('player', 'assets/human_player.png', 32, 48);
         game.load.spritesheet('enemy', 'assets/zombie5r.png', 32, 48);
-        game.load.tilemap('tilemap', 'assets/maze4.csv', null, Phaser.Tilemap.CSV);
-        game.load.image('tileset', 'assets/tileset.png');
+        game.load.tilemap('tilemap', 'assets/maze3.csv', null, Phaser.Tilemap.CSV);
+        game.load.image('tileset', 'assets/tileset.png');     
         game.load.image('bullet', 'assets/bullet0.png');
         game.load.image('heart', 'assets/heart.png');
         game.load.image('heart', 'assets/heart.png');
@@ -42,10 +42,26 @@ var playState = {
         map.addTilesetImage('tileset');
 
         backgroundlayer = map.createLayer(0);
-        map.setCollision(1, true, backgroundlayer);
+        map.setCollision(3, true, backgroundlayer);
+        map.setCollision(4, true, backgroundlayer);
+        map.setCollision(5, true, backgroundlayer);
+        map.setCollision(6, true, backgroundlayer);
+        map.setCollision(7, true, backgroundlayer);
+        map.setCollision(17, true, backgroundlayer);
+        map.setCollision(18, true, backgroundlayer);
+        map.setCollision(19, true, backgroundlayer);
+        map.setCollision(20, true, backgroundlayer);
+        map.setCollision(21, true, backgroundlayer);
+        map.setCollision(22, true, backgroundlayer);
+        map.setCollision(23, true, backgroundlayer);
+        map.setCollision(24, true, backgroundlayer);
+        map.setCollision(25, true, backgroundlayer);
+        map.setCollision(26, true, backgroundlayer);
+        map.setCollision(27, true, backgroundlayer);
+        map.setCollision(28, true, backgroundlayer);
         backgroundlayer.resizeWorld(true);
-
-        player = new Player(game.add.sprite(game.world.centerX, game.world.centerY, 'player'));
+        
+        player = new Player(game.add.sprite(game.world.centerX - 100, game.world.centerY - 50, 'player'));
 
         this.createBullets(FIREARM_LOAD);
 
@@ -150,7 +166,7 @@ var playState = {
     },
 
     playerCollidedWithZombie : function(obj1, obj2) {
-        if (math.round(game.time.totalElapsedSeconds()) % 5 == 0) {
+        if (math.round(game.time.totalElapsedSeconds()) % 2 == 0) {
             player.gotHit();
         }
         if (player.hp <= 0) {
@@ -163,7 +179,7 @@ var playState = {
         var randomlyPlacedEnemies = [];
 
         for (var i = 0; i < enemiesCount; ++i) {
-            var enemy = new Enemy(game.add.sprite(Math.random() * 100 * 32, Math.random() * 100 % MAP_WIDTH, 'enemy'));
+            var enemy = new Enemy(game.add.sprite(Math.random() * 100 * 16, Math.random() * 100 % MAP_WIDTH, 'enemy'));
 
             console.log("enemy created " + enemy);
             randomlyPlacedEnemies.push(enemy);
@@ -259,12 +275,12 @@ var playState = {
     updatePlayerHpIndicator() {
         var playerHpPercantage = player.hp / player.maxHp * 100;
 
-        tvPlayerHpIndicator.setText(playerHpPercantage);
+        tvPlayerHpIndicator.setText(Math.round(playerHpPercantage));
 
-        if (playerHpPercantage < 60) {
-            tvPlayerHpIndicator.fill = '#ffff00';
-        } else if (playerHpPercantage < 30) {
+        if (playerHpPercantage < 30) {
             tvPlayerHpIndicator.fill = '#ff0000';
+        } else if (playerHpPercantage < 60) {
+			tvPlayerHpIndicator.fill = '#ffff00';
         } else {
             tvPlayerHpIndicator.fill = '#43d637';
         }
