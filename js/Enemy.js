@@ -1,4 +1,5 @@
-let ENEMY_MOVEMENT_VELOCITY = 40;
+let ENEMY_MOVEMENT_VELOCITY = 100;
+let OFFSET = 3;
 
 class Enemy {
 
@@ -18,34 +19,52 @@ class Enemy {
     
     moveToTarget(x, y) {
         
+        this.sprite.body.velocity.y = 0;
+        this.sprite.body.velocity.x = 0;
         var normalizeMultiper = 1
         var X = math.round(x)
         var Y = math.round(y)
         var ZombiePosistion_Y = math.round(this.sprite.y);
         var ZombiePosistion_X = math.round(this.sprite.x);
-        
-        if (ZombiePosistion_Y < Y) {
+
+        if (ZombiePosistion_Y < Y - OFFSET && ZombiePosistion_Y < Y + OFFSET) {
             this.sprite.body.velocity.y = ENEMY_MOVEMENT_VELOCITY;
-            this.sprite.animations.play('moveDown', 10);
-        } else if (ZombiePosistion_Y > Y) {
+
+        } else if (ZombiePosistion_Y > Y - OFFSET && ZombiePosistion_Y > Y + OFFSET) {
             this.sprite.body.velocity.y = -ENEMY_MOVEMENT_VELOCITY;
-            this.sprite.animations.play('moveUp', 10);
-        }
-        else {
+
+        } 
+        if (ZombiePosistion_Y == Y) {
             this.sprite.body.velocity.y = 0;
         }
-        
-        if (ZombiePosistion_X < X) {
+        if (ZombiePosistion_X < X - OFFSET && ZombiePosistion_X < X + OFFSET) {
             this.sprite.body.velocity.x = ENEMY_MOVEMENT_VELOCITY;
             if (this.sprite.body.velocity.y == 0) {
-                this.sprite.animations.play('moveRight', 10);
             }
-        } else if (ZombiePosistion_X > X) {
+        } else if (ZombiePosistion_X > X - OFFSET && ZombiePosistion_X > X + OFFSET) {
             this.sprite.body.velocity.x = -ENEMY_MOVEMENT_VELOCITY;
             if (this.sprite.body.velocity.y == 0) {
-                this.sprite.animations.play('moveLeft', 10);
             }
         }
+        if (ZombiePosistion_X == X) {
+            this.sprite.body.velocity.x = 0;
+        }
+        if (this.sprite.body.velocity.y != 0) {
+            if (this.sprite.body.velocity.y > 0) {
+                this.sprite.animations.play('moveDown', 10);
+            }
+            else {
+                this.sprite.animations.play('moveUp', 10);
+            }
+        } else {
+            if (this.sprite.body.velocity.x > 0) {
+                this.sprite.animations.play('moveRight', 10);
+            }
+            else {
+                this.sprite.animations.play('moveLeft', 10); 
+            }
+        }
+
         
         if (math.pow(this.sprite.body.velocity.x, 2) 
             + math.pow(this.sprite.body.velocity.y, 2) 
